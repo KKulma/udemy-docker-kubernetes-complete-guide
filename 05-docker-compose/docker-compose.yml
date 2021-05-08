@@ -1,0 +1,11 @@
+version: '3' #specify the version of docker-compose
+# services = containers (in this case) 
+services: 
+    redis-server:
+        image: 'redis'
+    node-app:
+        restart: always
+        build: .
+        ports:
+            - "8081:8081" # we map 8081 on the host (local machine) to the port 8081 in the container
+             
