@@ -1,0 +1,23 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t MYTEST -f Dockerfile.dev .
+
+script:
+  - docker run -e CI=true MYTEST npm run test
+
+deploy:
+  provider: elasticbeanstalk
+  region: "us-west-2" #depends on your aws account and where you created the instance
+  app: docker # depends on the name of your app
+  env: "Docker-env" # depends on the name of your app's env
+  bucket_name: elasticbeanstalk-us-west-2-2784638729
+  bucket_path: "docker" # by default it's exactly the same one as the app name
+  on:
+    branch: master
+
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key:
+    secure: "$AWS_SECRET_KEY"
