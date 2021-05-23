@@ -1,0 +1,22 @@
+sudo: required
+language: generic
+services:
+  - docker
+before_install:
+  - docker build -t image_id -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true USERNAME/react-test npm test
+
+after_success:
+  - docker build -t real-client-image-id ./client
+  - docker build -t real-nginx-image-id ./nginx
+  - docker build -t real-server--image-id ./server
+  - docker build -t real-worker-image-id ./worker
+# log into Docker CLI
+- echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+# Push all the images to Dockerhub
+  - docker push -t real-client-image-id ./client
+  - docker push -t real-nginx-image-id ./nginx
+  - docker push -t real-server--image-id ./server
+  - docker push -t real-worker-image-id ./worker
