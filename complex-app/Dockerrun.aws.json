@@ -1,0 +1,46 @@
+{
+"AWSEBDockerrunVersion": 2,
+"containerDefinitions": [
+    {
+        "name": "client",
+        "image": "username/multi-client",
+        // the name of this service as it stands in the docker-compose.yml
+        "hostname": "client", 
+        "essential": false,
+        "memory": 128 
+        // #(Mb)
+    },
+    {
+        "name": "server",
+        "image": "username/multi-server",
+        // the name of this service as it stands in the docker-compose.yml
+        "hostname": "api", 
+        "essential": false,
+        "memory": 128 
+        // #(Mb)
+    },
+    {
+        "name": "worker",
+        "image": "username/multi-worker",
+        // the name of this service as it stands in the docker-compose.yml
+        "hostname": "worker", 
+        "essential": false,
+        // "memory": 128 (Mb)
+    },
+    {
+        "name": "nginx",
+        "image": "username/multi-nginx",
+        // not strictly necessary here as no other service needs to access nginx directly
+        "hostname": "nginx", 
+        "essential": true,
+        "portMappings": [
+            {
+            "hostPort": 80,
+            "containerPort": 80
+            }],
+            // refers to the name parameter
+        "links": ["client", "server"],
+        // "memory": 128 (Mb) 
+    }
+]
+}

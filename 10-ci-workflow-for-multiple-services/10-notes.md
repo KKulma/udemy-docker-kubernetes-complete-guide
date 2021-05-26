@@ -9,6 +9,8 @@ GH push
             builds images 
             deploys
 
+
+AWS EB, if there's a single Dockerfile, builds it by default. In the multi-container scenario we need to configure these builds in `Dockerrun.aws.json`.
 ### our multi-container workflow
 
 GH push 
